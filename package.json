@@ -1,0 +1,25 @@
+{
+  "name": "agnes-portfolio",
+  "private": true,
+  "type": "module",
+  "description": "Fashion styling portfolio for Agnes Solhall — content → images → site pipeline with three themes.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "placeholders": "node pipeline/00-placeholders.mjs",
+    "content": "node pipeline/01-content.mjs",
+    "images": "node pipeline/02-images.mjs",
+    "site": "node pipeline/03-site.mjs",
+    "build": "npm run content && npm run images && npm run site",
+    "dev": "node pipeline/serve.mjs",
+    "eval": "node eval/run.mjs",
+    "eval:content": "node eval/run.mjs content",
+    "eval:images": "node eval/run.mjs images",
+    "eval:site": "node eval/run.mjs site"
+  },
+  "dependencies": {
+    "sharp": "^0.33.5",
+    "yaml": "^2.6.1"
+  }
+}

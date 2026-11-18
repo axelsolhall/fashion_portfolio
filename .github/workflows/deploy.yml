@@ -1,0 +1,59 @@
+name: Build, evaluate & deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+env:
+  # Preview: every theme side by side under the repo path. For launch at agnes.solhall.se:
+  #   SITE_BASE: /   SITE_ROOT_THEME: <atelier|mosaic|spread>   SITE_PREVIEW: "0"   (see VERIFY.md / ASSUMPTIONS A-07, A-10)
+  SITE_BASE: /fashion_portfolio/
+  SITE_THEMES: atelier,mosaic,spread
+  SITE_PREVIEW: "1"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - name: Cache placeholder photos (A-01)
+        uses: actions/cache@v4
+        with:
+          path: content/projects/*/_placeholder_*.jpg
+          key: placeholders-${{ hashFiles('content/placeholders.yml') }}
+      - run: npm run placeholders
+      - name: Cache processed images (module 2 is incremental by file hash)
+        uses: actions/cache@v4
+        with:
+          path: |
+            build/img
+            build/images.json
+          key: images-${{ hashFiles('content/**', 'pipeline/02-images.mjs') }}
+          restore-keys: images-
+      - run: npm run build
+      - run: npm run eval
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: dist }
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

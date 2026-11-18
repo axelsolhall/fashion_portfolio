@@ -1,0 +1,8 @@
+node_modules/
+build/
+dist/
+.cache/
+.env
+.DS_Store
+# placeholder stock photos are fetched by `npm run placeholders`, never committed
+content/projects/*/_placeholder_*.jpg
