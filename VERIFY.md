@@ -20,8 +20,9 @@ Automated checks live in `npm run eval`. Everything below needs a person.
 - [ ] Real titles, publications, dates and credits for every project (A-02). The eval must show 0 "Name Surname".
 - [x] Bio, contact, publications and clients in `content/site.yml` (2026-11-18). She chose not to list education or experience.
 - [x] Contact e-mail: her own Gmail (A-04).
-- [ ] Axel adds the DNS record in Route 53: `agnes.solhall.se CNAME axelsolhall.github.io`, then sets the custom domain in repo Settings → Pages (A-07).
-- [ ] Switch the workflow to `SITE_ROOT_THEME=<chosen>` and `SITE_PREVIEW=0` (A-10).
+- [x] DNS record in Route 53 `agnes.solhall.se CNAME axelsolhall.github.io` (Axel, 2026-11-18) + custom domain set on the repo (A-07).
+- [x] Workflow switched to `SITE_ROOT_THEME=atelier` at `/` (2026-11-18).
+- [ ] Set `SITE_PREVIEW: "0"` once her real projects replace the placeholders (A-10). Until then the live site is noindex and shows the placeholder note.
 - [ ] Check the share preview (OG image) by pasting a project link into iMessage/WhatsApp.
 
 ## Verified by Claude (2026-11-18)
