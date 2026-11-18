@@ -35,3 +35,8 @@ Automated checks live in `npm run eval`. Everything below needs a person.
 - Chrome, 1512×805: a mouse wheel moves the home strip sideways (scrollLeft 0 → 500, counter 01 → 02, page itself never scrolls vertically). Nav is grey and turns #ff2d87 on hover. The computed cursor is the pink SVG (rendered both cursor images to check them). Name is in Syne caps. About shows publications and clients.
 - At 375 and 390 px (iframes): no horizontal page overflow, the name fits (right edge at 340/353 px), the strip swipes and the counter follows.
 - **Not** checked: real mouse-drag and trackpad feel (synthetic events only), Safari's cursor `image-set` rendering, iOS scroll-snap feel.
+
+## Fixed after Axel's iPhone test (2026-11-18)
+- Lightbox opened with a black focus box over the left third (the "previous" tap zone got focus). The dialog itself now takes focus. Checked in Chrome: active element is the dialog, no outline; arrows and Esc still work.
+- Lightbox images taller than the screen overflowed (1441px image in an 818px stage). The stage now has a definite grid track. Checked: all 6 Rouge images fit at 1310×862 and at 390px.
+- [ ] Axel: re-check both on the iPhone.

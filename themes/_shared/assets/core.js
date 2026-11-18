@@ -46,6 +46,7 @@
   const lb = d.createElement('dialog');
   lb.className = 'lb';
   lb.setAttribute('aria-label', 'Image viewer');
+  lb.tabIndex = -1;   // open with focus on the dialog itself, not its first button (iOS drew a focus box over the 'previous' tap zone)
   lb.innerHTML = `<div class="lb__stage"><img alt=""><button class="lb__nav lb__nav--prev" aria-label="Previous image"></button><button class="lb__nav lb__nav--next" aria-label="Next image"></button><span class="lb__cursor" aria-hidden="true"></span></div>
   <div class="lb__bar"><span class="lb__count"></span><span class="lb__cap"></span><button class="lb__close">Close</button></div>`;
   d.body.append(lb);
@@ -66,7 +67,7 @@
   };
   const open = t => {
     group = triggers.filter(x => x.dataset.lightbox === t.dataset.lightbox);
-    lb.showModal(); d.documentElement.style.overflow = 'hidden';
+    lb.showModal(); lb.focus({ preventScroll: true }); d.documentElement.style.overflow = 'hidden';
     show(group.indexOf(t));
   };
   const close = () => lb.close();
