@@ -7,7 +7,7 @@ Automated checks live in `npm run eval`. Everything below needs a person.
 - [ ] Is #ff2d87 the right pink (A-14)? Look at it on her own laptop, since cursor colours vary by screen.
 - [ ] Try the sideways home on a laptop with a mouse wheel, on a trackpad and on a phone. Does it feel natural?
 - [ ] Check her client and publication list on About (A-17).
-- [ ] Axel: decide public vs private originals before her photos go in (A-12).
+- [x] Public vs private originals: public (Axel, 2026-11-18, A-12).
 
 ## Done: round 1 of design review (Agnes + Axel)
 - [ ] Open the preview chooser on **a phone and a laptop**, and try all three directions.
