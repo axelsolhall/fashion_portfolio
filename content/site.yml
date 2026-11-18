@@ -16,7 +16,8 @@ experience: []
 # "Selected publications and clients", as Agnes sent them. Small normalisations are recorded in ASSUMPTIONS.md A-17.
 publications:
   - 72 Magazine
-  - Vogue US, UK, France, Spain, Portugal, Netherlands, Scandinavia, Ukraine, India, Singapore, China, Australia
+  - name: Vogue                      # an item is a plain name, or {name, note} for a small grey note after it
+    note: US, UK, France, Spain, Portugal, Netherlands, Scandinavia, Ukraine, India, Singapore, China, Australia
   - AnOther Magazine
   - Autre
   - Common Language

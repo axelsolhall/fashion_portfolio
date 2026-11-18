@@ -127,21 +127,28 @@ function project(ctx, p, idx) {
 }
 
 function about(ctx) {
+  // Editorial CV layout: one row per section (small label | content). Publications and clients run on as
+  // flowing text separated by slashes, the way stylists' CVs list them, instead of tall single-name columns.
   const s = ctx.site;
-  const list = (t, xs) => xs?.length ? `<section><h2>${t}</h2><ul role="list">${xs.map(x => `<li>${esc(x)}</li>`).join('')}</ul></section>` : '';
+  const item = x => typeof x === 'string' ? esc(x) : `${esc(x.name)}${x.note ? ` <small>${esc(x.note)}</small>` : ''}`;
+  const row = (t, inner) => `<section class="ab__row"><h2>${t}</h2>${inner}</section>`;
+  const flow = (t, xs) => xs?.length ? row(t, `<ul class="ab__flow" role="list">${xs.map(x => `<li>${item(x)}</li>`).join('')}</ul>`) : '';
+  const stack = (t, xs) => xs?.length ? row(t, `<ul class="ab__stack" role="list">${xs.map(x => `<li>${item(x)}</li>`).join('')}</ul>`) : '';
+  const contact = [
+    `<li><a href="mailto:${esc(s.email)}">${esc(s.email)}</a></li>`,
+    s.instagram ? `<li><a href="https://instagram.com/${esc(s.instagram)}" rel="noopener" target="_blank">@${esc(s.instagram)}</a></li>` : '',
+    s.agent ? `<li>Represented by ${esc(s.agent.name)} — <a href="mailto:${esc(s.agent.email)}">${esc(s.agent.email)}</a></li>` : '',
+    `<li>${esc(s.location)}</li>`,
+  ].join('');
   const body = `<article class="ab">
   <h1 class="sr-only">About</h1>
   <p class="ab__bio">${esc(s.bio)}</p>
-  <div class="ab__cols">
-    <section><h2>Contact</h2><ul role="list">
-      <li><a href="mailto:${esc(s.email)}">${esc(s.email)}</a></li>
-      ${s.instagram ? `<li><a href="https://instagram.com/${esc(s.instagram)}" rel="noopener" target="_blank">@${esc(s.instagram)}</a></li>` : ''}
-      ${s.agent ? `<li>Represented by ${esc(s.agent.name)} — <a href="mailto:${esc(s.agent.email)}">${esc(s.agent.email)}</a></li>` : ''}
-      <li>${esc(s.location)}</li></ul></section>
-    ${list('Selected publications', s.publications)}
-    ${list('Selected clients', s.clients)}
-    ${list('Experience', s.experience)}
-    ${list('Education', s.education)}
+  <div class="ab__rows">
+    ${row('Contact', `<ul class="ab__contact" role="list">${contact}</ul>`)}
+    ${flow('Selected publications', s.publications)}
+    ${flow('Selected clients', s.clients)}
+    ${stack('Experience', s.experience)}
+    ${stack('Education', s.education)}
   </div>
 </article>`;
   return shell(ctx, { title: `About — ${s.name}`, path: 'about/', current: 'about/', body, bodyAttrs: 'data-page="about"' });

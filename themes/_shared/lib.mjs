@@ -1,4 +1,7 @@
 // Shared render helpers used by every theme. Pure functions: data in → HTML string out.
+/** site.yml list items are a string or {name, note}. Plain-text form for simple lists. */
+export const itemText = x => typeof x === 'string' ? x : [x.name, x.note && `(${x.note})`].filter(Boolean).join(' ');
+
 export const esc = (s = '') => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];

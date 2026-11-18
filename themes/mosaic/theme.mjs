@@ -2,7 +2,7 @@
 // Inspired by Isabela Orozco: edge-to-edge cover grid with a giant high-contrast name laid over it.
 // Additions: hover "flipbook" through each shoot, category filter, horizontal-scroll project pages
 // with credits on the first panel.
-import { esc, picture, head, page, creditsDl, coverOf, neighbours, fmtDate, pad, variantUrl } from '../_shared/lib.mjs';
+import { esc, itemText, picture, head, page, creditsDl, coverOf, neighbours, fmtDate, pad, variantUrl } from '../_shared/lib.mjs';
 
 export const meta = {
   title: 'Mosaic',
@@ -89,7 +89,7 @@ function project(ctx, p, idx) {
 
 function about(ctx) {
   const s = ctx.site;
-  const list = (t, xs) => xs?.length ? `<section><h2>${t}</h2><ul role="list">${xs.map(x => `<li>${esc(x)}</li>`).join('')}</ul></section>` : '';
+  const list = (t, xs) => xs?.length ? `<section><h2>${t}</h2><ul role="list">${xs.map(x => `<li>${esc(itemText(x))}</li>`).join('')}</ul></section>` : '';
   const strip = ctx.projects.slice(0, 6).map(p => picture(ctx, coverOf(p), { sizes: '17vw', alt: '' })).join('');
   const body = `<article class="ab">
   <h1 class="ab__bio">${esc(s.bio)}</h1>

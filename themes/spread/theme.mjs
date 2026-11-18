@@ -1,7 +1,7 @@
 // Theme C — SPREAD
 // Inspired by Harley Weir @ Art Partner (two-up magazine spreads, dots at the edges, grid toggle)
 // and Harry Lambert @ Bryant Artists (one story at a time, "4 / 37" counter, credits as text).
-import { esc, picture, head, page, coverOf, neighbours, fmtDate, pad, variantUrl } from '../_shared/lib.mjs';
+import { esc, itemText, picture, head, page, coverOf, neighbours, fmtDate, pad, variantUrl } from '../_shared/lib.mjs';
 
 export const meta = {
   title: 'Spread',
@@ -107,7 +107,7 @@ function project(ctx, p, idx) {
 
 function about(ctx) {
   const s = ctx.site;
-  const list = (t, xs) => xs?.length ? `<section><h2>${t}</h2><ul role="list">${xs.map(x => `<li>${esc(x)}</li>`).join('')}</ul></section>` : '';
+  const list = (t, xs) => xs?.length ? `<section><h2>${t}</h2><ul role="list">${xs.map(x => `<li>${esc(itemText(x))}</li>`).join('')}</ul></section>` : '';
   const body = `<article class="ab">
   <h1 class="sr-only">About</h1>
   <p class="ab__bio">${esc(s.bio)}</p>

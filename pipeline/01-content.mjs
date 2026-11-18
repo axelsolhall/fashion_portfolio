@@ -13,6 +13,10 @@ const errors = [], warnings = [];
 
 const site = YAML.parse(await fs.readFile(path.join(C, 'site.yml'), 'utf8'));
 for (const k of ['name', 'role', 'email', 'bio']) if (!site?.[k]) errors.push(`site.yml: missing "${k}"`);
+for (const k of ['publications', 'clients', 'experience', 'education']) {
+  if (site?.[k] != null && !Array.isArray(site[k])) errors.push(`site.yml: "${k}" must be a list`);
+  (site?.[k] || []).forEach((x, i) => { if (typeof x !== 'string' && !(x && typeof x.name === 'string')) errors.push(`site.yml: ${k}[${i}] must be a name or {name, note}`); });
+}
 
 const projects = [];
 for (const slug of (await fs.readdir(path.join(C, 'projects'))).sort()) {

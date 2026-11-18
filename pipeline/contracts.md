@@ -9,7 +9,7 @@ Each module reads only the previous module's output, so any module can be re-run
 ### content/v1: `build/content.json` (module 1)
 ```
 { schema, generated, warnings[], site: <content/site.yml as-is: name, role, location, email, instagram, agent|null, url, bio,
-         education[], experience[], publications[], clients[] — empty lists hide their section>,
+         education[], experience[], publications[], clients[] — each item "Name" or {name, note}; empty lists hide their section>,
   projects: [{ slug, title, publication, date "YYYY[-MM]", year, category, summary,
                credits: [{role, name}], order|null, featured, placeholder,
                cover: <file>, images: [{ file, src: "content/projects/<slug>/<file>", alt, caption|null }] }] }
