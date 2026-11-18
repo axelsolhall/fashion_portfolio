@@ -39,7 +39,8 @@ for (const name of THEMES) {
     const file = path.join(DIST, mount, p);
     await fs.mkdir(path.dirname(file), { recursive: true });
     await fs.writeFile(file, html);
-    pages.push({ theme: name, url: BASE + mount + p.replace(/index\.html$/, ''), file: path.relative(DIST, file), bytes: Buffer.byteLength(html) });
+    pages.push({ theme: name, url: BASE + mount + p.replace(/index\.html$/, ''), file: path.relative(DIST, file), bytes: Buffer.byteLength(html),
+      noindex: /name="robots" content="noindex/.test(html) });
   }
   await fs.cp(path.join(ROOT, 'themes', name, 'assets'), path.join(DIST, mount, 'assets'), { recursive: true });
   meta.push({ name, mount, ...theme.meta });
@@ -66,7 +67,7 @@ if (ROOT_THEME) {
 await fs.writeFile(path.join(DIST, '.nojekyll'), '');
 await fs.writeFile(path.join(DIST, 'robots.txt'), PREVIEW ? 'User-agent: *\nDisallow: /\n' : `User-agent: *\nAllow: /\nSitemap: ${content.site.url.replace(/\/$/, '')}/sitemap.xml\n`);
 if (!PREVIEW && ROOT_THEME) {
-  const urls = pages.map(p => content.site.url.replace(/\/$/, '') + p.url.slice(BASE.length - 1));
+  const urls = pages.filter(p => !p.noindex).map(p => content.site.url.replace(/\/$/, '') + p.url.slice(BASE.length - 1));
   await fs.writeFile(path.join(DIST, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.map(u => `<url><loc>${u}</loc></url>`).join('')}</urlset>\n`);
 }
 await fs.writeFile(path.join(DIST, 'pages.json'), JSON.stringify({ schema: 'pages/v1', base: BASE, themes: meta, pages }, null, 1));

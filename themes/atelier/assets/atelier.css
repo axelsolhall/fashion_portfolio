@@ -69,7 +69,12 @@ a:hover{color:var(--accent)}
 .strip__arrow svg{width:18px;height:10px}
 .strip__arrow[data-dir="-1"]{margin-left:auto}
 
-/* ---------- preview-only typeface picker ---------- */
+/* ---------- 404 ---------- */
+.nf__h{margin:0;font:400 clamp(48px,7vw,112px)/.92 var(--serif);letter-spacing:-.02em}
+.nf__p{max-width:30em;margin:22px 0 0;font:italic 400 22px/1.3 var(--serif)}
+.nf__p a{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+
+/* ---------- typeface picker (unlinked, noindex) ---------- */
 .tp__h{margin:0;font:400 clamp(32px,4vw,56px)/1 var(--serif)}
 .tp__p{color:var(--mute);margin:12px 0 30px}
 .tp__p label{margin-left:14px;color:var(--ink)}

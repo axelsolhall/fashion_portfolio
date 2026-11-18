@@ -164,6 +164,13 @@ function about(ctx) {
   return shell(ctx, { title: `About — ${s.name}`, path: 'about/', current: 'about/', body, bodyAttrs: 'data-page="about"' });
 }
 
+/** GitHub Pages serves /404.html for any unknown URL (old preview links, typos). Absolute URLs, so it works at any depth. */
+function notFound(ctx) {
+  const body = `<article class="nf"><h1 class="nf__h">Page not found</h1>
+  <p class="nf__p">This page has moved or no longer exists. <a href="${ctx.u()}">See the work</a> or the <a href="${ctx.u('overview/')}">overview</a>.</p></article>`;
+  return shell(ctx, { title: `Not found — ${ctx.site.name}`, path: '404.html', current: '', body, bodyAttrs: 'data-page="404"', extra: '<meta name="robots" content="noindex">' });
+}
+
 /** Preview-only: every name-font candidate, so Agnes can compare them on her own screen. */
 function typePage(ctx) {
   const fonts = Object.values(NAME_FONTS).map(f => f.css).join('&');
@@ -179,7 +186,8 @@ function typePage(ctx) {
 
 export function render(ctx) {
   return [
-    { path: 'type/index.html', html: typePage(ctx) },   // unlinked + noindex; remove once Agnes has picked her font (A-15)
+    { path: 'type/index.html', html: typePage(ctx) },
+    { path: '404.html', html: notFound(ctx) },   // unlinked + noindex; remove once Agnes has picked her font (A-15)
     { path: 'index.html', html: home(ctx) },
     { path: 'overview/index.html', html: overview(ctx) },
     { path: 'about/index.html', html: about(ctx) },
