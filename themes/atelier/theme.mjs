@@ -1,24 +1,49 @@
 // Theme A — ATELIER
-// Inspired by Julia Sarr-Jamois (Agnes's favourite): airy, outlined display name, quiet left nav,
-// one image at a time on the home page, masonry overview. Fixes her one complaint:
+// Inspired by Julia Sarr-Jamois (Agnes's favourite): airy, quiet left nav, masonry overview.
+// Agnes chose this direction (2026-11-18), with her changes: sideways-scrolling home, pink cursor + nav hover,
+// an edgier all-caps name. Fixes her one complaint about the reference:
 // every image links into its project page, which shows all images + full credits.
 import { esc, picture, head, page, creditsDl, coverOf, neighbours, rows, fmtDate, pad, variantUrl } from '../_shared/lib.mjs';
 
 export const meta = {
   title: 'Atelier',
   tagline: 'Closest to Julia Sarr-Jamois — your favourite',
-  notes: 'Quiet and airy. One image at a time on the home page with arrows, swipe and keys; an Overview of every image; click any image to open its project with all images and full credits.',
+  notes: 'Agnes’s choice. Quiet and airy. Scroll the home page sideways (wheel, trackpad, drag, swipe or keys); an Overview of every image; click any image to open its project with all images and full credits.',
 };
 
-const FONTS = 'family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500';
+// ---- Agnes's round-1 picks (2026-11-18). The two knobs she is most likely to change live here. ----
+// accent: the pink of the cursor, nav hover and links (A-14). nameFont: the display face for her name (A-15).
+// Other candidates are on the preview-only page /atelier/type/, where you can swap one in and copy its entry.
+export const NAME_FONTS = {
+  syne:      { label: 'Syne ExtraBold',        css: 'family=Syne:wght@800',                   family: 'Syne',                  weight: 800, track: '-.02em' },
+  unbounded: { label: 'Unbounded Bold',        css: 'family=Unbounded:wght@700',              family: 'Unbounded',             weight: 700, track: '-.02em' },
+  archivo:   { label: 'Archivo Expanded Black', css: 'family=Archivo:wdth,wght@125,900',      family: 'Archivo',               weight: 900, track: '-.01em', stretch: '125%' },
+  syncopate: { label: 'Syncopate Bold',        css: 'family=Syncopate:wght@700',              family: 'Syncopate',             weight: 700, track: '.02em' },
+  anton:     { label: 'Anton',                 css: 'family=Anton',                           family: 'Anton',                 weight: 400, track: '.01em' },
+  shoulders: { label: 'Big Shoulders Display', css: 'family=Big+Shoulders+Display:wght@900',  family: 'Big Shoulders Display', weight: 900, track: '0' },
+  michroma:  { label: 'Michroma',              css: 'family=Michroma',                        family: 'Michroma',              weight: 400, track: '0' },
+  dela:      { label: 'Dela Gothic One',       css: 'family=Dela+Gothic+One',                 family: 'Dela Gothic One',       weight: 400, track: '0' },
+};
+export const DESIGN = { accent: '#ff2d87', nameFont: 'syne', nameOutline: false };
 
-function shell(ctx, { title, description, path, ogImage, body, current, bodyAttrs = '' }) {
+const nf = NAME_FONTS[DESIGN.nameFont];
+const FONTS = `family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500&${nf.css}`;
+
+/** Pink cursors as SVG data URIs (1x + 2x for retina), so the colour lives only in DESIGN.accent. */
+const svgUrl = svg => `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+const arrow = s => `<svg xmlns="http://www.w3.org/2000/svg" width="${s}" height="${s}" viewBox="0 0 24 24"><path d="M4 2.5v17.4l4.7-4.5 3 6.8 3-1.3-3-6.7h6.5z" fill="${DESIGN.accent}" stroke="#fff" stroke-width="1.1" stroke-linejoin="round"/></svg>`;
+const zoom = s => `<svg xmlns="http://www.w3.org/2000/svg" width="${s}" height="${s}" viewBox="0 0 32 32"><circle cx="16" cy="16" r="13" fill="${DESIGN.accent}" stroke="#fff" stroke-width="1.2"/><path d="M16 10v12M10 16h12" stroke="#fff" stroke-width="1.6"/></svg>`;
+const designVars = (font = nf) => `<style>:root{--accent:${DESIGN.accent};--name-font:'${font.family}';--name-wght:${font.weight};--name-track:${font.track};--name-stretch:${font.stretch || '100%'};
+  --cur:image-set(${svgUrl(arrow(24))} 1x,${svgUrl(arrow(48))} 2x) 4 3,auto;
+  --cur-zoom:image-set(${svgUrl(zoom(32))} 1x,${svgUrl(zoom(64))} 2x) 16 16,zoom-in}</style>`;
+
+function shell(ctx, { title, description, path, ogImage, body, current, bodyAttrs = '', fonts = FONTS, extra = '' }) {
   const s = ctx.site;
   const nav = [['', 'Home'], ['overview/', 'Overview'], ['about/', 'About']];
-  const h = head(ctx, { title, description, path, ogImage, fonts: FONTS, css: ctx.themeAssets + 'atelier.css' });
+  const h = head(ctx, { title, description, path, ogImage, fonts, css: ctx.themeAssets + 'atelier.css', extra: designVars() + extra });
   return page(h, `<a class="skip" href="#main">Skip to content</a>
 <header class="hd">
-  <a class="hd__name" href="${ctx.u()}" aria-label="${esc(s.name)} — home"><span>${esc(s.name)}</span></a>
+  <a class="hd__name${DESIGN.nameOutline ? ' is-outline' : ''}" href="${ctx.u()}" aria-label="${esc(s.name)} — home"><span>${esc(s.name)}</span></a>
   <p class="hd__role">${esc(s.role)}<span> · ${esc(s.location)}</span></p>
   <nav class="hd__nav" aria-label="Main">${nav.map(([p, l]) => `<a href="${ctx.u(p)}"${current === p ? ' aria-current="page"' : ''}>${l}</a>`).join('')}</nav>
 </header>
@@ -33,19 +58,26 @@ function shell(ctx, { title, description, path, ogImage, body, current, bodyAttr
 const projectLine = p => [p.publication, fmtDate(p.date)].filter(Boolean).join(', ');
 
 function home(ctx) {
+  // A horizontal strip of covers (Agnes: "scroll sideways instead of clicking"). Wheel, trackpad, drag, keys, swipe.
   const ps = ctx.projects.filter(p => p.featured);
-  const slides = ps.map((p, i) => {
-    const c = coverOf(p);
-    return `<a class="show__slide${i === 0 ? ' is-active' : ''}" href="${ctx.u(`work/${p.slug}/`)}" data-title="${esc(p.title)}" data-line="${esc(projectLine(p))}" ${i ? 'aria-hidden="true" tabindex="-1"' : ''}>
-      ${picture(ctx, c, { sizes: '(max-width: 760px) 92vw, 46vw', eager: i < 2, priority: i === 0, alt: `${p.title} — ${c.alt}`})}
-    </a>`;
+  const items = ps.map((p, i) => {
+    const c = coverOf(p), r = ctx.img(c.src).ratio;
+    return `<li class="strip__item" style="--ratio:${r}"><a href="${ctx.u(`work/${p.slug}/`)}" draggable="false">
+      ${picture(ctx, c, { sizes: `(max-width: 760px) ${Math.round(60 * r)}svh, ${Math.round(72 * r)}vh`, eager: i < 3, priority: i === 0, alt: `${p.title} — ${c.alt}`, attrs: 'draggable="false"' })}
+      <span class="strip__cap"><b>${esc(p.title)}</b> <span>${esc(projectLine(p))}</span></span>
+    </a></li>`;
   }).join('');
-  const body = `<section class="show" aria-roledescription="carousel" aria-label="Selected work">
-  <div class="show__stage">${slides}</div>
-  <button class="show__arrow show__arrow--prev" aria-label="Previous project"><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M9 1 1 9l8 8" fill="none" stroke="currentColor"/></svg></button>
-  <button class="show__arrow show__arrow--next" aria-label="Next project"><svg viewBox="0 0 10 18" aria-hidden="true"><path d="m1 1 8 8-8 8" fill="none" stroke="currentColor"/></svg></button>
-  <p class="show__cap" aria-live="polite"><a class="show__title" href="${ctx.u(`work/${ps[0].slug}/`)}">${esc(ps[0].title)}</a> <span class="show__line">${esc(projectLine(ps[0]))}</span> <span class="show__count">01 / ${pad(ps.length)}</span></p>
-  <div class="show__progress" aria-hidden="true"><i></i></div>
+  const body = `<h1 class="sr-only">${esc(ctx.site.name)} — selected work</h1>
+<section class="strip" aria-label="Selected work">
+  <ul class="strip__track" role="list" tabindex="0" aria-label="Selected work, scroll sideways">${items}
+    <li class="strip__item strip__end"><a href="${ctx.u('overview/')}"><span>All work</span><b>Overview →</b></a></li>
+  </ul>
+  <div class="strip__bar">
+    <span class="strip__count">01 / ${pad(ps.length)}</span>
+    <span class="strip__progress" aria-hidden="true"><i></i></span>
+    <button class="strip__arrow" data-dir="-1" aria-label="Scroll back"><svg viewBox="0 0 18 10" aria-hidden="true"><path d="M5 1 1 5l4 4M1 5h16" fill="none" stroke="currentColor"/></svg></button>
+    <button class="strip__arrow" data-dir="1" aria-label="Scroll forward"><svg viewBox="0 0 18 10" aria-hidden="true"><path d="m13 1 4 4-4 4M17 5H1" fill="none" stroke="currentColor"/></svg></button>
+  </div>
 </section>`;
   return shell(ctx, { title: `${ctx.site.name} — ${ctx.site.role}`, path: '', current: '', ogImage: null, body, bodyAttrs: 'data-page="home"' });
 }
@@ -106,7 +138,8 @@ function about(ctx) {
       ${s.instagram ? `<li><a href="https://instagram.com/${esc(s.instagram)}" rel="noopener" target="_blank">@${esc(s.instagram)}</a></li>` : ''}
       ${s.agent ? `<li>Represented by ${esc(s.agent.name)} — <a href="mailto:${esc(s.agent.email)}">${esc(s.agent.email)}</a></li>` : ''}
       <li>${esc(s.location)}</li></ul></section>
-    ${list('Clients &amp; publications', s.clients)}
+    ${list('Selected publications', s.publications)}
+    ${list('Selected clients', s.clients)}
     ${list('Experience', s.experience)}
     ${list('Education', s.education)}
   </div>
@@ -114,8 +147,22 @@ function about(ctx) {
   return shell(ctx, { title: `About — ${s.name}`, path: 'about/', current: 'about/', body, bodyAttrs: 'data-page="about"' });
 }
 
+/** Preview-only: every name-font candidate, so Agnes can compare them on her own screen. */
+function typePage(ctx) {
+  const fonts = Object.values(NAME_FONTS).map(f => f.css).join('&');
+  const rows = Object.entries(NAME_FONTS).map(([k, f]) => `<li class="tp__row${k === DESIGN.nameFont ? ' is-current' : ''}">
+    <span class="tp__label">${esc(f.label)}${k === DESIGN.nameFont ? ' — in use' : ''} <code>${k}</code></span>
+    <span class="tp__name" style="font-family:'${f.family}';font-weight:${f.weight};letter-spacing:${f.track};font-stretch:${f.stretch || '100%'}">${esc(ctx.site.name)}</span></li>`).join('');
+  const body = `<article class="tp"><h1 class="tp__h">Name typeface — pick one</h1>
+  <p class="tp__p">All caps. Hover a row to see it in pink. <label><input type="checkbox" id="tp-outline"> Outline</label></p>
+  <ul class="tp__list" role="list">${rows}</ul>
+  <script>document.getElementById('tp-outline').onchange=e=>document.querySelector('.tp').classList.toggle('is-outline',e.target.checked)</script></article>`;
+  return shell(ctx, { title: `Typeface — ${ctx.site.name}`, path: 'type/', current: '', body, bodyAttrs: 'data-page="type"', fonts: `${FONTS}&${fonts}` });
+}
+
 export function render(ctx) {
   return [
+    ...(ctx.preview ? [{ path: 'type/index.html', html: typePage(ctx) }] : []),
     { path: 'index.html', html: home(ctx) },
     { path: 'overview/index.html', html: overview(ctx) },
     { path: 'about/index.html', html: about(ctx) },

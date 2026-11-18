@@ -113,7 +113,7 @@ function about(ctx) {
   <p class="ab__bio">${esc(s.bio)}</p>
   <div class="ab__cols">
     <section><h2>Contact</h2><ul role="list"><li><a href="mailto:${esc(s.email)}">${esc(s.email)}</a></li>${s.instagram ? `<li><a href="https://instagram.com/${esc(s.instagram)}" rel="noopener" target="_blank">@${esc(s.instagram)}</a></li>` : ''}${s.agent ? `<li>${esc(s.agent.name)}</li>` : ''}<li>${esc(s.location)}</li></ul></section>
-    ${list('Clients', s.clients)}${list('Experience', s.experience)}${list('Education', s.education)}
+    ${list('Publications', s.publications)}${list('Clients', s.clients)}${list('Experience', s.experience)}${list('Education', s.education)}
   </div>
 </article>`;
   return shell(ctx, { title: `About — ${s.name}`, path: 'about/', current: 'about/', body, bodyAttrs: 'data-page="about"' });

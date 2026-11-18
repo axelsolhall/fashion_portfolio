@@ -99,7 +99,7 @@ function about(ctx) {
       ${s.instagram ? `<li><a href="https://instagram.com/${esc(s.instagram)}" rel="noopener" target="_blank">@${esc(s.instagram)}</a></li>` : ''}
       ${s.agent ? `<li>${esc(s.agent.name)} — <a href="mailto:${esc(s.agent.email)}">${esc(s.agent.email)}</a></li>` : ''}
       <li>${esc(s.location)}</li></ul></section>
-    ${list('Clients', s.clients)}${list('Experience', s.experience)}${list('Education', s.education)}
+    ${list('Publications', s.publications)}${list('Clients', s.clients)}${list('Experience', s.experience)}${list('Education', s.education)}
   </div>
   <div class="ab__strip" aria-hidden="true">${strip}</div>
 </article>`;

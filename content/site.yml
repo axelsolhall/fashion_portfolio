@@ -1,25 +1,41 @@
-# Site-wide content. Everything marked TODO(agnes) is placeholder — see ASSUMPTIONS.md.
+# Site-wide content. Everything here was confirmed by Agnes on 2026-11-18.
 name: Agnes Solhall
 role: Fashion Stylist
-location: Paris — Stockholm            # confirmed by Agnes's bio 2026-11-18
-email: agnes@solhall.se               # TODO(agnes) A-04 — address may not exist yet
-instagram: agnessolhall               # TODO(agnes) A-04
+location: Paris — Stockholm
+email: agnes.solhall@gmail.com
+instagram: agnessolhall
 agent: null                           # e.g. { name: "Agency", email: "..." } when represented
 url: https://agnes.solhall.se
 bio: >-
   Agnes Solhall is a Swedish fashion stylist working between Paris and Stockholm.
   Trained in Paris, she works across editorial, campaign and commercial projects.
   She is currently the in-house stylist for Swedish brand Dedicated.
-education:
-  - Fashion studies, Paris                  # TODO(agnes) school name + year
-experience:                                 # TODO(agnes) dates + earlier history
-  - In-house stylist, Dedicated — present
-  - Freelance stylist, 2024 — present
-  - Styling assistant, Paris, 2022 — 2024
-clients:                                    # TODO(agnes) real clients/publications
-  - Maison Ardente
-  - Nordlys Magazine
-  - Studio Halvø
-  - Atelier Verre
-  - Revue Blanche
-  - Kvarn
+# Education and experience: Agnes chose not to list them (2026-11-18). Add a list here to show a section again.
+education: []
+experience: []
+# "Selected publications and clients", as Agnes sent them. Small normalisations are recorded in ASSUMPTIONS.md A-17.
+publications:
+  - 72 Magazine
+  - Vogue US, UK, France, Spain, Portugal, Netherlands, Scandinavia, Ukraine, India, Singapore, China, Australia
+  - AnOther Magazine
+  - Autre
+  - Common Language
+  - CRASH
+  - Purple
+  - RUSSH
+  - WSJ. Magazine
+clients:
+  - Guerlain
+  - Ray-Ban
+  - Arte
+  - Nike
+  - Balenciaga
+  - Garnier
+  - Moncler
+  - Vogue World 2024
+  - Lanvin
+  - Camilla and Marc
+  - Casablanca
+  - Cartier
+  - Paco Rabanne
+  - Louis Vuitton
