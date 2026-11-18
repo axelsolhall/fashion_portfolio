@@ -1,19 +1,19 @@
 # Site-wide content. Everything marked TODO(agnes) is placeholder — see ASSUMPTIONS.md.
 name: Agnes Solhall
 role: Fashion Stylist
-location: Paris — Stockholm            # TODO(agnes) A-03
+location: Paris — Stockholm            # confirmed by Agnes's bio 2026-11-18
 email: agnes@solhall.se               # TODO(agnes) A-04 — address may not exist yet
 instagram: agnessolhall               # TODO(agnes) A-04
 agent: null                           # e.g. { name: "Agency", email: "..." } when represented
 url: https://agnes.solhall.se
 bio: >-
   Agnes Solhall is a Swedish fashion stylist working between Paris and Stockholm.
-  Trained in Paris, she styles editorial, campaign and personal projects with a
-  focus on silhouette, texture and colour — clothes that tell the story before
-  anyone says a word.
+  Trained in Paris, she works across editorial, campaign and commercial projects.
+  She is currently the in-house stylist for Swedish brand Dedicated.
 education:
   - Fashion studies, Paris                  # TODO(agnes) school name + year
-experience:                                 # TODO(agnes) real assisting history
+experience:                                 # TODO(agnes) dates + earlier history
+  - In-house stylist, Dedicated — present
   - Freelance stylist, 2024 — present
   - Styling assistant, Paris, 2022 — 2024
 clients:                                    # TODO(agnes) real clients/publications
