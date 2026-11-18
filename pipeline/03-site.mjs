@@ -50,6 +50,19 @@ if (!ROOT_THEME) {
   await fs.writeFile(path.join(DIST, 'index.html'), chooser);
   pages.push({ theme: 'chooser', url: BASE, file: 'index.html', bytes: Buffer.byteLength(chooser) });
 }
+// Old preview links (/<theme>/…, shared with Agnes before launch) redirect to the same page at the root.
+// Atelier keeps deep links (/atelier/work/rouge/#3 → /work/rouge/#3); the other themes go to the home page.
+if (ROOT_THEME) {
+  const redirect = to => `<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex"><link rel="canonical" href="${to}"><meta http-equiv="refresh" content="0;url=${to}"><script>location.replace(${JSON.stringify(to)}+location.hash)</script><a href="${to}">${to}</a>\n`;
+  for (const old of ['atelier', 'mosaic', 'spread']) {
+    const targets = old === ROOT_THEME ? pages.map(p => p.url.slice(BASE.length)) : [''];
+    for (const t of targets) {
+      const f = path.join(DIST, old, t, 'index.html');
+      await fs.mkdir(path.dirname(f), { recursive: true });
+      await fs.writeFile(f, redirect(BASE + t));
+    }
+  }
+}
 await fs.writeFile(path.join(DIST, '.nojekyll'), '');
 await fs.writeFile(path.join(DIST, 'robots.txt'), PREVIEW ? 'User-agent: *\nDisallow: /\n' : `User-agent: *\nAllow: /\nSitemap: ${content.site.url.replace(/\/$/, '')}/sitemap.xml\n`);
 if (!PREVIEW && ROOT_THEME) {
