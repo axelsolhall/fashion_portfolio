@@ -1,0 +1,13 @@
+# Agnes's project. Source folder (lets pipeline/00-ingest.mjs recognise it on a re-run):
+#   6. Vogue China - Stylist Alvin Yu - Photographer Ned Rogers - Assisted by Agnes Solhall - November 2023
+title: Vogue China
+publication: ""
+date: "2023-11"
+category: Editorial
+role: Styling assistant
+order: 6
+alt: Vogue China editorial, November 2023
+credits:
+  Styling: Alvin Yu
+  Styling assistant: Agnes Solhall
+  Photography: Ned Rogers

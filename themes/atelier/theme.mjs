@@ -51,11 +51,14 @@ function shell(ctx, { title, description, path, ogImage, body, current, bodyAttr
 <footer class="ft">
   <a href="mailto:${esc(s.email)}">${esc(s.email)}</a>
   ${s.instagram ? `<a href="https://instagram.com/${esc(s.instagram)}" rel="noopener" target="_blank">Instagram</a>` : ''}
-  ${ctx.preview ? '<span class="ft__note">Preview · placeholder images &amp; credits</span>' : ''}
+  ${ctx.preview && ctx.projects.some(p => p.placeholder) ? '<span class="ft__note">Preview · placeholder images &amp; credits</span>' : ''}
 </footer>`, { bodyAttrs: `class="no-js" ${bodyAttrs}`, scripts: [ctx.assetBase + 'shared/core.js', ctx.themeAssets + 'atelier.js'] });
 }
 
-const projectLine = p => [p.publication, fmtDate(p.date)].filter(Boolean).join(', ');
+// Agnes's part in a job she assisted is stated, never implied (A-20): "Assisting Harry Lambert".
+const assisting = p => p.role === 'Styling assistant' && p.leadStylist ? `Assisting ${p.leadStylist}` : '';
+const projectLine = p => [p.publication, assisting(p), fmtDate(p.date)].filter(Boolean).join(' · ');
+const titleWithPub = p => [p.title, p.publication].filter(Boolean).join(' — ');
 
 function home(ctx) {
   // A horizontal strip of covers (Agnes: "scroll sideways instead of clicking"). Wheel, trackpad, drag, keys, swipe.
@@ -64,7 +67,7 @@ function home(ctx) {
     const c = coverOf(p), r = ctx.img(c.src).ratio;
     return `<li class="strip__item" style="--ratio:${r}"><a href="${ctx.u(`work/${p.slug}/`)}" draggable="false">
       ${picture(ctx, c, { sizes: `(max-width: 760px) ${Math.round(60 * r)}svh, ${Math.round(72 * r)}vh`, eager: i < 3, priority: i === 0, alt: `${p.title} — ${c.alt}`, attrs: 'draggable="false"' })}
-      <span class="strip__cap"><b>${esc(p.title)}</b> <span>${esc(projectLine(p))}</span></span>
+      <span class="strip__cap"><b>${esc(p.title)}</b><span>${esc(projectLine(p))}</span></span>
     </a></li>`;
   }).join('');
   const body = `<h1 class="sr-only">${esc(ctx.site.name)} — selected work</h1>
@@ -91,7 +94,7 @@ function overview(ctx) {
 <ul class="ov" role="list">${items.map(({ p, im, i }) => `<li class="ov__item">
   <a href="${ctx.u(`work/${p.slug}/`)}#${i + 1}">
     ${picture(ctx, im, { sizes: '(max-width: 760px) 46vw, 24vw', alt: `${p.title} — ${im.alt}` })}
-    <span class="ov__label"><b>${esc(p.title)}</b> ${esc(p.publication)}</span>
+    <span class="ov__label"><b>${esc(p.title)}</b> ${esc(p.publication || assisting(p))}</span>
   </a></li>`).join('')}</ul>`;
   return shell(ctx, { title: `Overview — ${ctx.site.name}`, path: 'overview/', current: 'overview/', body, bodyAttrs: 'data-page="overview"' });
 }
@@ -100,16 +103,22 @@ function project(ctx, p, idx) {
   const { prev, next } = neighbours(ctx.projects, idx);
   let n = 0;
   const grid = rows(ctx, p.images).map(r => `<div class="pj__row pj__row--${r.length}">${r.map(im => {
-    const k = n++;
+    const k = n++, m = ctx.img(im.src);
+    // never show a small source (e.g. 800px magazine scans) larger than its real size on a single-image row
+    const cap = r.length === 1 && m.w < 1600 ? ` style="max-width:${m.w}px;margin-inline:auto"` : '';
+    if (m.video) return `<div class="pj__img pj__vid" id="i${k + 1}" data-video="${m.hash}"${cap}>
+      <video src="${ctx.imgUrl(m.video.file)}" poster="${variantUrl(ctx, im, 1440)}" width="${m.w}" height="${m.h}" style="--ratio:${m.ratio}" muted loop playsinline autoplay preload="metadata" aria-label="${esc(im.alt)}"></video>
+      <button class="pj__sound" type="button" aria-pressed="false">Sound on</button>
+    </div>`;
     const full = variantUrl(ctx, im, 2048);
-    return `<a class="pj__img" href="${full}" data-lightbox="${p.slug}" data-full="${full}" data-caption="${esc(p.title)} — ${esc(p.publication)}" id="i${k + 1}"${k === 0 ? ' data-hero' : ''}>
+    return `<a class="pj__img" href="${full}" data-lightbox="${p.slug}" data-full="${full}" data-caption="${esc(titleWithPub(p))}" id="i${k + 1}"${k === 0 ? ' data-hero' : ''}${cap}>
       ${picture(ctx, im, { sizes: r.length === 2 ? '(max-width: 760px) 92vw, 34vw' : '(max-width: 760px) 92vw, 68vw', eager: k < 2, priority: k === 0 })}
     </a>`;
   }).join('')}</div>`).join('');
   const body = `<article class="pj">
   <header class="pj__hd">
     <h1 class="pj__title">${esc(p.title)}</h1>
-    <p class="pj__meta"><span>${esc(p.publication)}</span><span>${fmtDate(p.date)}</span><span>${esc(p.category)}</span></p>
+    <p class="pj__meta">${[p.publication, assisting(p), fmtDate(p.date), p.category].filter(Boolean).map(x => `<span>${esc(x)}</span>`).join('')}</p>
     ${p.summary ? `<p class="pj__summary">${esc(p.summary)}</p>` : ''}
     ${creditsDl(p, 'credits pj__credits')}
   </header>
@@ -121,7 +130,8 @@ function project(ctx, p, idx) {
   </nav>
 </article>`;
   return shell(ctx, {
-    title: `${p.title} — ${p.publication} · Styled by ${ctx.site.name}`, description: `${p.title} for ${p.publication} (${fmtDate(p.date)}). ${p.summary}`,
+    title: `${titleWithPub(p)} · ${ctx.site.name}`,
+    description: [`${titleWithPub(p)}, ${fmtDate(p.date)}.`, p.credits.map(c => `${c.role}: ${c.name}`).join('. ') + '.', p.summary].filter(Boolean).join(' '),
     path: `work/${p.slug}/`, ogImage: '/img/' + ctx.img(coverOf(p).src).og, current: 'overview/', body, bodyAttrs: 'data-page="project" data-deeplink="scroll"',
   });
 }
@@ -164,12 +174,12 @@ function typePage(ctx) {
   <p class="tp__p">All caps. Hover a row to see it in pink. <label><input type="checkbox" id="tp-outline"> Outline</label></p>
   <ul class="tp__list" role="list">${rows}</ul>
   <script>document.getElementById('tp-outline').onchange=e=>document.querySelector('.tp').classList.toggle('is-outline',e.target.checked)</script></article>`;
-  return shell(ctx, { title: `Typeface — ${ctx.site.name}`, path: 'type/', current: '', body, bodyAttrs: 'data-page="type"', fonts: `${FONTS}&${fonts}` });
+  return shell(ctx, { title: `Typeface — ${ctx.site.name}`, path: 'type/', current: '', body, bodyAttrs: 'data-page="type"', fonts: `${FONTS}&${fonts}`, extra: '<meta name="robots" content="noindex">' });
 }
 
 export function render(ctx) {
   return [
-    ...(ctx.preview ? [{ path: 'type/index.html', html: typePage(ctx) }] : []),
+    { path: 'type/index.html', html: typePage(ctx) },   // unlinked + noindex; remove once Agnes has picked her font (A-15)
     { path: 'index.html', html: home(ctx) },
     { path: 'overview/index.html', html: overview(ctx) },
     { path: 'about/index.html', html: about(ctx) },

@@ -7,7 +7,7 @@ import YAML from 'yaml';
 const ROOT = path.resolve(import.meta.dirname, '..');
 const spec = YAML.parse(await fs.readFile(path.join(ROOT, 'content/placeholders.yml'), 'utf8')) || {};
 let fetched = 0, cached = 0;
-for (const [slug, { ids }] of Object.entries(spec)) {
+for (const [slug, { ids }] of Object.entries(spec || {})) {
   const dir = path.join(ROOT, 'content/projects', slug);
   await fs.mkdir(dir, { recursive: true });
   await Promise.all(ids.map(async (id, i) => {

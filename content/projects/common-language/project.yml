@@ -1,0 +1,13 @@
+# Agnes's project. Source folder (lets pipeline/00-ingest.mjs recognise it on a re-run):
+#   5. Common Language Magazine - Stylist Rebecca Purshouse - Photographer Renaud Cambuzat - Assisted by Agnes Solhall - 2025
+title: Common Language
+publication: ""
+date: "2025"
+category: Editorial
+role: Styling assistant
+order: 5
+alt: Common Language magazine editorial
+credits:
+  Styling: Rebecca Purshouse
+  Styling assistant: Agnes Solhall
+  Photography: Renaud Cambuzat

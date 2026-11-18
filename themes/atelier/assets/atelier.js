@@ -1,3 +1,17 @@
+/* ATELIER — project videos: autoplay muted only while on screen, "Sound on/off" toggle. */
+(() => {
+  const vids = [...document.querySelectorAll('.pj__vid')];
+  if (!vids.length) return;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const io = new IntersectionObserver(es => es.forEach(e => { const v = e.target.querySelector('video'); if (e.isIntersecting && !reduce) v.play().catch(() => {}); else v.pause(); }), { threshold: 0.25 });
+  vids.forEach(box => {
+    const v = box.querySelector('video'), b = box.querySelector('.pj__sound');
+    if (reduce) { v.removeAttribute('autoplay'); v.controls = true; }
+    io.observe(box);
+    b.onclick = () => { v.muted = !v.muted; if (!v.muted) v.play().catch(() => {}); b.setAttribute('aria-pressed', String(!v.muted)); b.textContent = v.muted ? 'Sound on' : 'Sound off'; };
+  });
+})();
+
 /* ATELIER — home strip that scrolls sideways.
    Mouse wheel → smooth horizontal scroll, trackpad/touch scroll natively, drag with the mouse,
    arrow keys and buttons step one image, counter + progress follow the scroll position. */

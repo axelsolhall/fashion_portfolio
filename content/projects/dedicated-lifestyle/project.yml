@@ -1,0 +1,12 @@
+# Agnes's project. Source folder (lets pipeline/00-ingest.mjs recognise it on a re-run):
+#   1. Dedicated Lifestyle 2026 - Stylist Agnes Solhall - Photographer Kegen Lorentzon
+title: Dedicated Lifestyle
+publication: Dedicated
+date: "2026"
+category: Campaign
+role: Stylist
+order: 1
+alt: Dedicated lifestyle campaign, styled by Agnes Solhall
+credits:
+  Styling: Agnes Solhall
+  Photography: Kegen Lorentzon

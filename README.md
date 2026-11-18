@@ -27,25 +27,34 @@ npm run dev            # http://localhost:4321/
 ```
 
 ## Adding a project (for Agnes)
-1. Create a folder `content/projects/<url-name>/`, e.g. `content/projects/vogue-scandinavia-2026/`.
-2. Put the photos in it. They are shown in filename order (`01.jpg`, `02.jpg`, …). Full-resolution JPEGs are fine; they get resized automatically.
-3. Add `project.yml`:
-   ```yaml
-   title: Spring Forward
-   publication: Vogue Scandinavia
-   date: 2026-04            # YYYY-MM
-   category: Editorial      # becomes a filter in Mosaic
-   summary: One line about the story.   # optional
-   alt: Model in a pink knitted gown against a stone wall   # describes the photos for screen readers/Google
-   cover: 03.jpg            # optional, default = first image
-   credits:
-     Photography: Name
-     Styling: Agnes Solhall
-     Hair: Name
-     Make-up: Name
-     Model: Name
-   ```
-4. Commit and push. GitHub Actions builds, runs the evals and deploys.
+
+**Easiest:** send a WeTransfer like the first one. One folder per project, named
+`N. Title - Stylist X - Photographer Y - Assisted by Agnes Solhall - Month Year` (leave out "Assisted by" for your own jobs),
+with the images numbered in order (`1. cover.jpg`, `2. bild.jpg`, …). Videos (.mov/.mp4) are fine. Then Axel runs:
+
+```
+npm run ingest -- "/path/to/unzipped/folder"   # shrinks + strips metadata, converts video, drafts project.yml
+npm run eval:ingest                             # what came in, what's low-res
+# edit content/projects/<slug>/project.yml (title, publication, category, role), then:
+npm run build && npm run eval && git add content && git push   # deploys to agnes.solhall.se
+```
+
+Running it again on the same folder is safe: existing files and project.yml are never overwritten.
+
+**By hand:** make `content/projects/<slug>/` with numbered images and a project.yml:
+
+```yaml
+title: In Harmony
+publication: 72 Magazine          # optional
+date: "2026-03"                   # YYYY or YYYY-MM
+category: Editorial               # Editorial | Campaign | …
+role: Styling assistant           # or Stylist — decides "Assisting …" vs her own credit
+order: 2                          # optional; otherwise newest first
+credits:
+  Styling: Rebecca Purshouse
+  Styling assistant: Agnes Solhall
+  Photography: Justin French
+```
 
 ## Deploy
 `.github/workflows/deploy.yml` builds on every push to `main` and publishes to GitHub Pages.

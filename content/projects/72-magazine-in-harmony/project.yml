@@ -1,0 +1,13 @@
+# Agnes's project. Source folder (lets pipeline/00-ingest.mjs recognise it on a re-run):
+#   2. 72 Magazine 'In Harmony' - Stylist Rebecca Purshouse - Photographer Justin French - Assisted by Agnes Solhall - 2026
+title: In Harmony
+publication: 72 Magazine
+date: "2026"
+category: Editorial
+role: Styling assistant
+order: 2
+alt: "72 Magazine editorial “In Harmony”"
+credits:
+  Styling: Rebecca Purshouse
+  Styling assistant: Agnes Solhall
+  Photography: Justin French

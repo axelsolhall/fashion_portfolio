@@ -1,0 +1,13 @@
+# Agnes's project. Source folder (lets pipeline/00-ingest.mjs recognise it on a re-run):
+#   3. Vogue Spain - Stylist Harry Lambert - Photographer Sean and Seng - Assisted by Agnes Solhall - September 2025
+title: Vogue Spain
+publication: ""
+date: "2025-09"
+category: Editorial
+role: Styling assistant
+order: 3
+alt: Vogue Spain editorial, September 2025
+credits:
+  Styling: Harry Lambert
+  Styling assistant: Agnes Solhall
+  Photography: Sean and Seng

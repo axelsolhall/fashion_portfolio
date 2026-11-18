@@ -16,12 +16,12 @@ concurrency:
 
 env:
   # Live at https://agnes.solhall.se (custom domain set in repo Settings → Pages; DNS: CNAME agnes → axelsolhall.github.io, A-07).
-  # Agnes chose Atelier, so it is mounted at the root. SITE_PREVIEW stays "1" (noindex + "placeholder" note) until her
-  # real projects replace the placeholders; then set it to "0" (A-10, VERIFY.md).
+  # Agnes chose Atelier, so it is mounted at the root. SITE_PREVIEW "0" since 2026-11-18: her real work is in, the site
+  # is indexable with a sitemap. Set "1" to add noindex again (A-10).
   # To bring back the three-direction chooser: SITE_BASE /, drop SITE_ROOT_THEME, SITE_THEMES atelier,mosaic,spread.
   SITE_BASE: /
   SITE_ROOT_THEME: atelier
-  SITE_PREVIEW: "1"
+  SITE_PREVIEW: "0"
 
 jobs:
   build:

@@ -1,0 +1,13 @@
+# Agnes's project. Source folder (lets pipeline/00-ingest.mjs recognise it on a re-run):
+#   7. Re-Edition S:S26 - Stylist Gabrielle Marceca - Photographer Kito Munoz - Assisted by Agnes Solhall - April 2026
+title: Re-Edition S/S26
+publication: ""
+date: "2026-04"
+category: Editorial
+role: Styling assistant
+order: 7
+alt: Re-Edition S/S26 editorial
+credits:
+  Styling: Gabrielle Marceca
+  Styling assistant: Agnes Solhall
+  Photography: Kito Munoz

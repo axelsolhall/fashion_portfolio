@@ -40,3 +40,17 @@ Automated checks live in `npm run eval`. Everything below needs a person.
 - Lightbox opened with a black focus box over the left third (the "previous" tap zone got focus). The dialog itself now takes focus. Checked in Chrome: active element is the dialog, no outline; arrows and Esc still work.
 - Lightbox images taller than the screen overflowed (1441px image in an 818px stage). The stage now has a definite grid track. Checked: all 6 Rouge images fit at 1310×862 and at 390px.
 - [ ] Axel: re-check both on the iPhone.
+
+## Round 3: Agnes's real work (2026-11-18, ingested overnight while Axel slept)
+Verified by Claude:
+- `npm run eval`: all checks pass. 11/11 projects show all of their images and credits, the Moncler video included. 0 broken links. 0 EXIF left in the committed images. 49.7 MB of originals (from the 1.2 GB delivery). Largest file 6.6 MB.
+- Chrome at 1310×862: home strip, Overview, Moncler (the video autoplays muted, paused=false, readyState 4), Vogue China (800px images shown at no more than 800px), and `#3` on Moncler scrolls to the 3rd item after the video. At 390/375 px: home, project and About, no overflow.
+- Re-running the ingest on the same folder is a no-op (0.3 s, no duplicates, no project.yml overwritten).
+
+Needs Agnes / Axel:
+- [ ] Agnes reads every project page: titles, "Assisting <stylist>" lines, dates, categories (A-18, A-20). The Shapeshifter stylist is assumed to be Rebecca Purshouse.
+- [ ] Higher-res files for the six 800px projects (A-21), and more than one image for Common Language 2025 if she has them.
+- [ ] Hair / make-up / model credits, if she wants them shown.
+- [ ] Alt text is generic ("Vogue China editorial, November 2023 — image 3"). Fine for now; better if described per image.
+- [ ] Check the Moncler video's sound on a phone ("Sound on" button).
+- [ ] Her font pick at agnes.solhall.se/type/ (noindex, not linked from the site).

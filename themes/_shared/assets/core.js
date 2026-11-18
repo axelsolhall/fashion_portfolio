@@ -94,9 +94,11 @@
 
   // deep link: /work/rouge/#3 opens image 3 (used by index pages: "click any image → that image in its project")
   const n = parseInt(location.hash.slice(1), 10);
-  if (n && triggers[n - 1] && d.body.dataset.deeplink !== 'none') {
-    const t = triggers[n - 1];
+  // #n is the nth item of the project; prefer its id (videos are items but not lightbox triggers)
+  const tn = n && (d.getElementById('i' + n) || triggers[n - 1]);
+  if (tn && d.body.dataset.deeplink !== 'none') {
+    const t = tn;
     if (d.body.dataset.deeplink === 'scroll') { t.scrollIntoView({ block: 'center' }); t.classList.add('is-target'); history.replaceState(null, '', location.pathname); }
-    else open(t);
+    else if (t.dataset.lightbox) open(t);
   }
 })();

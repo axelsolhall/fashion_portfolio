@@ -1,0 +1,13 @@
+# Agnes's project. Source folder (lets pipeline/00-ingest.mjs recognise it on a re-run):
+#   11. Common Language Magazine Issue 15 - Stylist Rebecca Purshouse - Photographer Carl Diner - Assisted by Agnes Solhall - 2026
+title: Common Language
+publication: Issue 15
+date: "2026"
+category: Editorial
+role: Styling assistant
+order: 11
+alt: Common Language magazine Issue 15 editorial
+credits:
+  Styling: Rebecca Purshouse
+  Styling assistant: Agnes Solhall
+  Photography: Carl Diner

@@ -19,7 +19,10 @@ const OUT = path.join(ROOT, 'build/img');
 await fs.mkdir(OUT, { recursive: true });
 const prev = await fs.readFile(path.join(ROOT, 'build/images.json'), 'utf8').then(JSON.parse).catch(() => ({ images: {} }));
 
-const srcs = [...new Set(content.projects.flatMap(p => p.images.map(i => i.src)))];
+// Videos are processed through their poster frame (all image metadata/variants come from it) + the mp4 copied as-is.
+const items = content.projects.flatMap(p => p.images);
+const videos = items.filter(i => i.kind === 'video');
+const srcs = [...new Set(items.map(i => i.kind === 'video' ? i.poster : i.src))];
 const result = {}; let built = 0, reused = 0;
 const t0 = Date.now();
 
@@ -56,8 +59,15 @@ async function processOne(src) {
 const queue = [...srcs]; const N = Math.max(2, Math.min(6, os.cpus().length - 1));
 await Promise.all(Array.from({ length: N }, async () => { while (queue.length) await processOne(queue.shift()); }));
 
+for (const v of videos) {
+  const buf = await fs.readFile(path.join(ROOT, v.src));
+  const file = crypto.createHash('sha1').update(buf).digest('hex').slice(0, 10) + '.mp4';
+  if (!(await fs.access(path.join(OUT, file)).then(() => true, () => false))) await fs.writeFile(path.join(OUT, file), buf);
+  result[v.src] = { ...result[v.poster], video: { file, bytes: buf.length } };
+}
+
 // prune files no longer referenced
-const keep = new Set(Object.values(result).flatMap(r => [r.og, ...r.variants.avif.map(v => v.file), ...r.variants.webp.map(v => v.file)]));
+const keep = new Set(Object.values(result).flatMap(r => [r.og, ...r.variants.avif.map(v => v.file), ...r.variants.webp.map(v => v.file), ...(r.video ? [r.video.file] : [])]));
 let pruned = 0;
 for (const f of await fs.readdir(OUT)) if (!keep.has(f)) { await fs.unlink(path.join(OUT, f)); pruned++; }
 

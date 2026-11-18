@@ -1,0 +1,13 @@
+# Agnes's project. Source folder (lets pipeline/00-ingest.mjs recognise it on a re-run):
+#   8. Vogue Spain - Stylist Rebecca Purshouse - Photographer David Gomez Maestre - Assisted by Agnes Solhall - 2025
+title: Vogue Spain
+publication: ""
+date: "2025"
+category: Editorial
+role: Styling assistant
+order: 8
+alt: Vogue Spain editorial, 2025
+credits:
+  Styling: Rebecca Purshouse
+  Styling assistant: Agnes Solhall
+  Photography: David Gomez Maestre

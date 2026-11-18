@@ -1,32 +1,4 @@
 # PLACEHOLDER IMAGERY — see ASSUMPTIONS.md A-01.
-# Free-licence photos from Unsplash (https://unsplash.com/license), used only so the
-# three designs can be judged with realistic imagery until Agnes's own work is added.
-# `npm run placeholders` downloads them into content/projects/<slug>/_placeholder_NN.jpg
-# (gitignored). Delete a project's entry here once her real images are in its folder.
-rouge:
-  photographer: thisismcfollis
-  ids: [1792219485329-e329ede0b63b, 1792219485757-68a934226970, 1792219485598-05214ed4a02d, 1792219485412-e3f7b67f32af, 1793015137406-c71a63a2d92f, 1612336307429-8a898d10e223]
-white-coast:
-  photographer: onurssenay
-  ids: [1683488780180-6a91d8f14f9e, 1683488780112-f47a64de5d15, 1683488780099-6db934e087ab, 1683488780099-30fa3c1b193d, 1683488780100-d8ddfb0d10b8, 1683488780092-1643c389aace, 1683488780168-a668fe8f45af, 1683488780189-ead10334728b]
-suiting:
-  photographer: mohamadkhosravi
-  ids: [1631052066165-9720608b36da, 1679101893310-9b9adb4b733b, 1679101893304-045625840a94, 1631052065979-40ebfc981ec3, 1617137984095-74e4e5e3613f, 1600091166971-7f9faad6c1e2]
-soft-armour:
-  photographer: goodfacesagency
-  ids: [1765337210325-768dafc12989, 1765337210176-1bb643f4776b, 1765337210302-cb6271ae6f9f, 1773747310662-e7cc9e681226, 1773747310674-b42a55d72003, 1587878423573-2ae874dd1f21]
-lacquer:
-  photographer: thisismcfollis
-  ids: [1793704953128-7f906739c44c, 1793704953960-0852239c9911, 1793704953161-83a181a14e33, 1793704954041-f97516ae0b1c, 1790015527516-18b69ae0f57e]
-noir:
-  photographer: various
-  ids: [1620122303020-87ec826cf70d, 1518611540400-6b85a0704342, 1548207775-a7676e36f20a, 1613730317185-5c455649f89d, 1605083608390-a397bb302853, 1495462911434-be47104d70fa, 1533392151650-269f96231f65, 1615367840621-d387aef43326]
-painted:
-  photographer: besolsun
-  ids: [1788629794810-9c3d6640b866, 1788629794919-51ca3936127a, 1788629794801-6ad4582d87c4, 1779398260965-460a7eac6b78, 1779398342244-19fc9f7d45bc]
-jardin:
-  photographer: photosbychalo
-  ids: [1622122201640-3b34a4a49444, 1622122201714-77da0ca8e5d2, 1583433306546-ded68847fd0d, 1679025907166-b7572ac3fc3e, 1649217708497-7e5ca8c20703, 1602303894456-398ce544d90b, 1600102427329-d5b2cde7e162]
-blue-hour:
-  photographer: various
-  ids: [1578693082747-50c396cacd81, 1523359346063-d879354c0ea5, 1616411598297-e0053c6ee59d, 1741941171881-40832346c7fe, 1754555009599-9f0d848748e7]
+# Empty since 2026-11-18: Agnes's real work replaced all placeholder projects.
+# Format (only needed to mock up a design without real photos):
+#   <slug>: { ids: [<unsplash photo id>, ...] }   → content/projects/<slug>/_placeholder_NN.jpg (gitignored)

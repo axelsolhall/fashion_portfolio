@@ -16,7 +16,9 @@
     "eval": "node eval/run.mjs",
     "eval:content": "node eval/run.mjs content",
     "eval:images": "node eval/run.mjs images",
-    "eval:site": "node eval/run.mjs site"
+    "eval:site": "node eval/run.mjs site",
+    "ingest": "node pipeline/00-ingest.mjs",
+    "eval:ingest": "node eval/run.mjs ingest"
   },
   "dependencies": {
     "sharp": "^0.33.5",

@@ -1,5 +1,6 @@
 // Evals — one section per pipeline module, each runnable alone:
 //   npm run eval            all modules
+//   npm run eval:ingest     module 0 (ingest/v1)    — originals shrunk, metadata stripped, low-res sources flagged
 //   npm run eval:content    module 1 (content/v1)   — schema, completeness, placeholders left
 //   npm run eval:images     module 2 (images/v1)    — files exist, compression vs source, LQIP size
 //   npm run eval:site       module 3 (dist/)        — broken links, every project shows ALL images + ALL credits,
@@ -66,6 +67,11 @@ async function evalImages() {
     ['avg WebP @ ~960w', kb(webp960 / n), '< 220 KB'],
     ['bytes saved vs source (AVIF 960)', ((1 - avif960 / srcBytes) * 100).toFixed(1) + '%', '> 85%'],
     ['avg inline LQIP', (lqip / n).toFixed(0) + ' B', '< 1200 B']]);
+  const low = srcs.map(s => im.images[s]).filter(m => m && Math.max(m.w, m.h) < 1400).length;
+  low ? warn(`${low}/${srcs.length} sources are under 1400px on the long edge — they will look soft on large screens; ask for higher-res files`) : ok('all sources ≥ 1400px');
+  const vids = Object.values(im.images).filter(m => m.video);
+  if (vids.length) ok(`${vids.length} video(s), ${(vids.reduce((n, m) => n + m.video.bytes, 0) / 1e6).toFixed(1)} MB (target < 15 MB each)`);
+  vids.filter(m => m.video.bytes > 15e6).forEach(m => warn(`video ${m.video.file} is ${(m.video.bytes / 1e6).toFixed(1)} MB — raise INGEST.video.crf`));
   if (avif960 / n > 150 * 1024) warn('AVIF 960 average above target — lower SETTINGS.avif.quality');
   if (lqip / n > 1200) warn('LQIP above target — lower lqipWidth');
 }
@@ -102,7 +108,8 @@ async function evalSite() {
     const m = page.url.match(/work\/([^/]+)\/$/);
     if (m) {
       const p = c.projects.find(x => x.slug === m[1]);
-      const shown = new Set([...html.matchAll(/data-lightbox="[^"]+"[^>]*data-full="[^"]*\/img\/([^"-]+)/g)].map(x => x[1]));
+      const shown = new Set([...html.matchAll(/data-lightbox="[^"]+"[^>]*data-full="[^"]*\/img\/([^"-]+)/g)].map(x => x[1])
+        .concat([...html.matchAll(/data-video="([^"]+)"/g)].map(x => x[1])));
       const im = await read('build/images.json');
       const want = p.images.map(i => im.images[i.src].hash);
       const missingImgs = want.filter(h => ![...shown].some(s => h.startsWith(s) || s.startsWith(h))).length;
@@ -128,6 +135,25 @@ async function evalSite() {
   ok(`deployed images ${mb(img)} (GitHub Pages limit 1 GB)`);
 }
 
+// ---------------------------------------------------------------- module 0
+async function evalIngest() {
+  console.log('\n[0] INGEST  build/ingest.json + content/projects/');
+  const r = await read('build/ingest.json').catch(() => null);
+  if (!r) return warn('no build/ingest.json — run: node pipeline/00-ingest.mjs "<delivery folder>"');
+  r.schema === 'ingest/v1' ? ok('schema ingest/v1') : fail('ingest', `schema is ${r.schema}`);
+  const items = r.projects.flatMap(p => p.items.map(x => ({ ...x, slug: p.slug })));
+  const inB = items.reduce((n, x) => n + x.inBytes, 0), outB = items.reduce((n, x) => n + x.outBytes, 0);
+  table([['metric', 'value', 'target'], ['projects / files', `${r.projects.length} / ${items.length}`, '—'], ['bytes in → out', `${mb(inB)} → ${mb(outB)}`, '< 150 MB out (public git repo)'],
+    ['largest output file', mb(Math.max(...items.map(x => x.outBytes))), '< 20 MB (GitHub hard limit 100 MB)'],
+    ['images with EXIF left', items.filter(x => x.exifOut).length, '0'], ['low-res sources (< 1400px)', items.filter(x => x.lowRes).length, 'ask Agnes for originals']]);
+  const sliced = Object.fromEntries(r.projects.map(p => [p.slug, p.items.filter(x => x.lowRes).length]));
+  Object.entries(sliced).filter(([, n]) => n).forEach(([s, n]) => warn(`${s}: ${n} low-res file(s)`));
+  items.filter(x => x.exifOut).forEach(x => fail('ingest', `${x.slug}/${x.out} still has EXIF metadata`));
+  items.filter(x => x.outBytes > 20e6).forEach(x => fail('ingest', `${x.slug}/${x.out} is ${mb(x.outBytes)}`));
+  for (const p of r.projects) for (const x of p.items) if (!(await exists(path.join(ROOT, 'content/projects', p.slug, x.out)))) warn(`${p.slug}/${x.out} listed in ingest report but not in content (renamed or removed?)`);
+}
+
+if (which === 'all' || which === 'ingest') await evalIngest().catch(e => fail('ingest', e.message));
 if (which === 'all' || which === 'content') await evalContent().catch(e => fail('content', e.message));
 if (which === 'all' || which === 'images') await evalImages().catch(e => fail('images', e.message));
 if (which === 'all' || which === 'site') await evalSite().catch(e => fail('site', e.message));

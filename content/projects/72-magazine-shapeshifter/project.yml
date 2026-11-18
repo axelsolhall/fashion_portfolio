@@ -1,0 +1,13 @@
+# Agnes's project. Source folder (lets pipeline/00-ingest.mjs recognise it on a re-run):
+#   9. 72 Magazine 'Shapeshifter' - Rebecca Purshouse - Photographer James Ari King - Assisted by Agnes Solhall - 2026
+title: Shapeshifter
+publication: 72 Magazine
+date: "2026"
+category: Editorial
+role: Styling assistant
+order: 9
+alt: "72 Magazine editorial “Shapeshifter”"
+credits:
+  Styling: Rebecca Purshouse      # her folder name has no "Stylist" label here; assumed (A-18)
+  Styling assistant: Agnes Solhall
+  Photography: James Ari King
