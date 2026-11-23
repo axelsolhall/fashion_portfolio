@@ -1,0 +1,12 @@
+# Agnes's project. Source folder (lets pipeline/00-ingest.mjs recognise it on a re-run):
+#   AnOther Magazine - Stylist Ola Ebiti - Photographer Julia Hetta - Assisted by Agnes Solhall -  Spring:Summer 2024 Issue
+title: AnOther Magazine
+publication: "Spring/Summer 2024 Issue"
+date: "2024"
+category: Editorial
+role: Styling assistant
+alt: "AnOther Magazine Spring/Summer 2024 editorial"
+credits:
+  Styling: Ola Ebiti
+  Styling assistant: Agnes Solhall
+  Photography: Julia Hetta

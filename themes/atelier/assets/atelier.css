@@ -127,17 +127,20 @@ a:hover{color:var(--accent)}
 
 /* ---------- about ---------- */
 .ab{max-width:1100px}
-.ab__bio{margin:0;font:400 clamp(28px,3.4vw,50px)/1.12 var(--serif);letter-spacing:-.01em;text-wrap:pretty}
+.ab__bio{margin:0;font:400 clamp(23px,2.7vw,40px)/1.16 var(--serif);letter-spacing:-.01em;text-wrap:pretty}
 .ab__rows{margin-top:clamp(48px,8vh,96px)}
 .ab__row{display:grid;grid-template-columns:minmax(130px,1fr) 4fr;gap:10px 32px;padding:18px 0 30px;border-top:1px solid var(--line)}
 .ab h2{margin:0;padding-top:.45em;font-size:10.5px;font-weight:400;letter-spacing:.09em;text-transform:uppercase;color:var(--mute)}
 .ab ul{margin:0;padding:0;list-style:none}
 .ab__contact{display:flex;flex-wrap:wrap;gap:4px 30px;padding-top:.2em;font-size:15px;line-height:1.6}
 .ab__contact li:last-child{color:var(--mute)}
-.ab__flow{font:400 clamp(22px,2.3vw,32px)/1.3 var(--serif);text-wrap:pretty}
-.ab__flow li{display:inline;white-space:nowrap}   /* names never split; the Vogue note may wrap */
-.ab__flow li:not(:last-child)::after{content:'/';margin:0 .38em 0 .42em;color:var(--accent);font-family:var(--sans);font-weight:300;font-size:.7em;vertical-align:.08em}
-.ab__flow small{font:400 12px/1 var(--sans);letter-spacing:.03em;color:var(--mute);white-space:normal}
+.ab__lists{display:grid;grid-template-columns:minmax(130px,1fr) 2fr 2fr;gap:0 32px;padding:18px 0 30px;border-top:1px solid var(--line)}
+.ab__lists::before{content:''}   /* keeps the lists in the content columns, under Contact */
+.ab__col{min-width:0}
+.ab__col h2{margin-bottom:14px}
+.ab__list{font:400 clamp(19px,1.7vw,24px)/1.35 var(--serif)}
+.ab__list li{overflow-wrap:anywhere}
+.ab__list small{display:block;max-width:30ch;margin:2px 0 6px;font:400 12px/1.45 var(--sans);letter-spacing:.03em;color:var(--mute)}
 .ab__stack{font-size:15px;line-height:1.7;padding-top:.2em}
 
 /* ---------- mobile ---------- */
@@ -163,7 +166,9 @@ a:hover{color:var(--accent)}
   .ov__label{opacity:1;transform:none;padding-top:4px}
   .ov__label b{font-size:13px}
   .ab__row{grid-template-columns:1fr;padding:14px 0 24px}
-  .ab__flow{font-size:21px}
+  .ab__lists{grid-template-columns:1fr 1fr;gap:0 20px;padding:14px 0 24px}
+  .ab__lists::before{display:none}
+  .ab__list{font-size:18px}
   .ab__contact{flex-direction:column;font-size:15px}
   .pj__row--2{grid-template-columns:1fr}
   .pj__row--1{max-width:100%}

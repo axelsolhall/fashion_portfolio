@@ -54,3 +54,17 @@ Needs Agnes / Axel:
 - [ ] Alt text is generic ("Vogue China editorial, November 2023 — image 3"). Fine for now; better if described per image.
 - [ ] Check the Moncler video's sound on a phone ("Sound on" button).
 - [ ] Her font pick at agnes.solhall.se/type/ (noindex, not linked from the site).
+
+## Round 4: second delivery + Agnes's notes (2026-11-23)
+Verified by Claude:
+- Ingest of the 12 new folders (97 files, 1.1 GB → 80 MB). **0 duplicates** of photos already on the site. The 8 "similar" pairs the first hash flagged were checked side by side by eye, and all are different photos (same backdrop, different look).
+- Duplicate detector eval (`npm run eval:ingest`): 324/324 re-saved or 2%-cropped copies caught. The closest two different photos are at 0.313 (cut-off 0.22).
+- The order on the site is her list 1–23 (checked in build/content.json and on the home strip).
+- Common Language: the photo sets are swapped (A-22).
+- About: the bio is smaller (max 50 → 40px). Publications and clients are now vertical lists, side by side. No horizontal overflow at 375/390/1280px on home, About, Overview or 4 project pages (scrollWidth checked in Chrome). Looked at by eye on desktop and at 390px.
+- Small photos get higher encode quality (A-21). `npm run eval`: all checks pass, 23/23 projects complete, 0 broken links.
+
+Needs Agnes / Axel:
+- [ ] Common Language: right way round now? Should the photographer credits have moved with the photos (A-22)?
+- [ ] Dates of SS27/AW27 work shown as 2026 (A-25); titles "Lifestyle SS26/SS27", "Lookbook SS27/AW27/AW26", "ROC Campaign".
+- [ ] Higher-res files for the 10 small-image projects (A-21). This is the only real fix for "low quality".

@@ -1,0 +1,12 @@
+# Agnes's project. Source folder (lets pipeline/00-ingest.mjs recognise it on a re-run):
+#   72 Magazine - Stylist Rebecca Purshouse - Photographer Victor Brun - Assisted by Agnes Solhall - Winter 25:26 Edition
+title: 72 Magazine
+publication: "Winter 25/26 Edition"
+date: "2025"
+category: Editorial
+role: Styling assistant
+alt: "72 Magazine Winter 25/26 Edition editorial"
+credits:
+  Styling: Rebecca Purshouse
+  Styling assistant: Agnes Solhall
+  Photography: Victor Brun

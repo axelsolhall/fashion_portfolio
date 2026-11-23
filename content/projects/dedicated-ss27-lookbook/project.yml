@@ -1,0 +1,11 @@
+# Agnes's project. Source folder (lets pipeline/00-ingest.mjs recognise it on a re-run):
+#   Dedicated - Stylist Agnes Solhall - Photographer Sara Arnald - SS27 Lookbook
+title: Lookbook SS27
+publication: Dedicated
+date: "2026"
+category: Lookbook
+role: Stylist
+alt: "Dedicated SS27 lookbook, styled by Agnes Solhall"
+credits:
+  Styling: Agnes Solhall
+  Photography: Sara Arnald

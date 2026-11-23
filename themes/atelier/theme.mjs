@@ -137,12 +137,12 @@ function project(ctx, p, idx) {
 }
 
 function about(ctx) {
-  // Editorial CV layout: one row per section (small label | content). Publications and clients run on as
-  // flowing text separated by slashes, the way stylists' CVs list them, instead of tall single-name columns.
+  // Editorial CV layout: small label | content rows. Publications and clients are vertical lists, one name per line,
+  // side by side on wide screens (Agnes 2026-11-23: the run-on line "goes too far horizontally" — read down, not across).
   const s = ctx.site;
   const item = x => typeof x === 'string' ? esc(x) : `${esc(x.name)}${x.note ? ` <small>${esc(x.note)}</small>` : ''}`;
   const row = (t, inner) => `<section class="ab__row"><h2>${t}</h2>${inner}</section>`;
-  const flow = (t, xs) => xs?.length ? row(t, `<ul class="ab__flow" role="list">${xs.map(x => `<li>${item(x)}</li>`).join('')}</ul>`) : '';
+  const list = (t, xs) => xs?.length ? `<section class="ab__col"><h2>${t}</h2><ul class="ab__list" role="list">${xs.map(x => `<li>${item(x)}</li>`).join('')}</ul></section>` : '';
   const stack = (t, xs) => xs?.length ? row(t, `<ul class="ab__stack" role="list">${xs.map(x => `<li>${item(x)}</li>`).join('')}</ul>`) : '';
   const contact = [
     `<li><a href="mailto:${esc(s.email)}">${esc(s.email)}</a></li>`,
@@ -155,8 +155,7 @@ function about(ctx) {
   <p class="ab__bio">${esc(s.bio)}</p>
   <div class="ab__rows">
     ${row('Contact', `<ul class="ab__contact" role="list">${contact}</ul>`)}
-    ${flow('Selected publications', s.publications)}
-    ${flow('Selected clients', s.clients)}
+    <div class="ab__lists">${list('Selected publications', s.publications)}${list('Selected clients', s.clients)}</div>
     ${stack('Experience', s.experience)}
     ${stack('Education', s.education)}
   </div>

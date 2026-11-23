@@ -151,6 +151,34 @@ async function evalIngest() {
   items.filter(x => x.exifOut).forEach(x => fail('ingest', `${x.slug}/${x.out} still has EXIF metadata`));
   items.filter(x => x.outBytes > 20e6).forEach(x => fail('ingest', `${x.slug}/${x.out} is ${mb(x.outBytes)}`));
   for (const p of r.projects) for (const x of p.items) if (!(await exists(path.join(ROOT, 'content/projects', p.slug, x.out)))) warn(`${p.slug}/${x.out} listed in ingest report but not in content (renamed or removed?)`);
+  (r.duplicates || []).forEach(x => warn(`skipped as duplicate: ${x.folder}/${x.file} = ${x.of} (distance ${x.distance})`));
+  (r.similar || []).forEach(x => warn(`similar, check by eye: ${x.folder}/${x.file} ~ ${x.to} (distance ${x.distance})`));
+  await evalDedupe(r.settings);
+}
+
+// Duplicate detector (A-23) on the photos on the site now:
+//   recall    — a re-saved copy (900px WebP q50) and a 2%-cropped copy of every photo must stay within dupMax of the original;
+//   precision — two different photos on the site must never be within dupMax of each other.
+async function evalDedupe(S) {
+  const { fingerprint, distance } = await import('../pipeline/lib/fingerprint.mjs');
+  const sharp = (await import('sharp')).default;
+  const files = [];
+  for (const s of await fs.readdir(path.join(ROOT, 'content/projects'))) for (const f of await fs.readdir(path.join(ROOT, 'content/projects', s)).catch(() => [])) if (/^\d+\.jpg$/.test(f)) files.push(path.join(ROOT, 'content/projects', s, f));
+  const hs = [], copy = [];
+  for (const f of files) {
+    hs.push(await fingerprint(f));
+    const { width: w, height: h } = await sharp(f).metadata();
+    copy.push(distance(hs.at(-1), await fingerprint(await sharp(f).resize({ width: 900 }).webp({ quality: 50 }).toBuffer())));
+    copy.push(distance(hs.at(-1), await fingerprint(await sharp(f).extract({ left: Math.round(w * .02), top: Math.round(h * .02), width: Math.round(w * .96), height: Math.round(h * .96) }).jpeg({ quality: 70 }).toBuffer())));
+  }
+  let minDiff = 99, pair = '';
+  for (let i = 0; i < hs.length; i++) for (let j = i + 1; j < hs.length; j++) { const d = distance(hs[i], hs[j]); if (d < minDiff) { minDiff = d; pair = `${path.relative(ROOT, files[i])} ~ ${path.relative(ROOT, files[j])}`; } }
+  const caught = copy.filter(d => d <= S.dupMax).length;
+  table([['dedupe metric', 'value', 'target'], ['re-saved + cropped copies caught', `${caught}/${copy.length} (max distance ${Math.max(...copy)})`, `all (≤ dupMax ${S.dupMax})`],
+    ['closest two different photos', `distance ${minDiff}`, `> dupMax ${S.dupMax}`]]);
+  console.log(`    closest pair: ${pair}`);
+  caught === copy.length ? ok('every re-saved / cropped copy is caught') : fail('ingest', `${copy.length - caught} copies missed`);
+  minDiff > S.dupMax ? ok('no two different site photos would be mistaken for duplicates') : fail('ingest', `different photos within dupMax: ${pair}`);
 }
 
 if (which === 'all' || which === 'ingest') await evalIngest().catch(e => fail('ingest', e.message));

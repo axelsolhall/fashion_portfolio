@@ -1,0 +1,26 @@
+# The order projects appear on the site (home strip, overview, next/previous) — top = first.
+# One line per project folder in content/projects/. Agnes's list of 2026-11-23. A-24
+# A project folder missing from this list still appears, after the listed ones (newest first), and the build warns.
+- dedicated-ss27-lifestyle       #  1 Dedicated lifestyle SS27
+- dedicated-ss27-lookbook        #  2 Dedicated lookbook SS27
+- dedicated-aw27-lookbook        #  3 Dedicated lookbook AW27
+- dedicated-lifestyle            #  4 Dedicated lifestyle SS26
+- 72-magazine-in-harmony         #  5 72 In Harmony
+- dedicated-roc-campaign         #  6 Dedicated ROC campaign
+- vogue-spain-harry-lambert      #  7 Vogue Spain, Harry Lambert
+- dedicated-aw26-lookbook        #  8 Dedicated lookbook AW26
+- vogue-china-2026               #  9 Vogue China, Alvin Yu, May 2026
+- another-man-ss25               # 10 AnOther Man, Ola Ebiti, 2025
+- vogue-us-april-2023            # 11 Vogue US, April 2023
+- 72-magazine-winter-25-26       # 12 72 Winter 25/26 Edition
+- moncler-x-ee72                 # 13 Moncler
+- common-language-issue-15       # 14 Common Language 2026
+- vogue-china                    # 15 Vogue China 2023
+- re-edition-ss26                # 16 Re-Edition
+- 72-magazine-shapeshifter       # 17 72 Shapeshifter
+- common-language                # 18 Common Language 2025
+- another-magazine-ss24          # 19 AnOther Magazine 2024
+- vogue-us-october-2023          # 20 Vogue US, October 2023
+- 72-magazine-color-of-beauty    # 21 72 Color of Beauty
+- elle-sweden                    # 22 ELLE Sweden
+- vogue-spain-rebecca-purshouse  # 23 Vogue Spain, Rebecca Purshouse, 2025

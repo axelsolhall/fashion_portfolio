@@ -1,0 +1,12 @@
+# Agnes's project. Source folder (lets pipeline/00-ingest.mjs recognise it on a re-run):
+#   ELLE Sweden - Stylist Kristine Halken - Photographer Angelina Mamoun-Bergenwall - Assisted by Agnes Solhall - 2026
+title: ELLE Sweden
+publication: ""
+date: "2026"
+category: Editorial
+role: Styling assistant
+alt: ELLE Sweden editorial
+credits:
+  Styling: Kristine Halken
+  Styling assistant: Agnes Solhall
+  Photography: Angelina Mamoun-Bergenwall

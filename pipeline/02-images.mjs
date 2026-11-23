@@ -11,7 +11,10 @@ import sharp from 'sharp';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 // Tunables — ASSUMPTIONS A-06 (widths/quality chosen for full-bleed editorial images on retina screens)
-export const SETTINGS = { widths: [480, 960, 1440, 2048], avif: { quality: 52, effort: 4 }, webp: { quality: 78 }, jpg: { quality: 80, width: 1200 }, lqipWidth: 24 };
+export const SETTINGS = { widths: [480, 960, 1440, 2048], avif: { quality: 52, effort: 4 }, webp: { quality: 78 }, jpg: { quality: 80, width: 1200 }, lqipWidth: 24,
+  // Small sources (web-sized magazine images, A-21) are shown near 1:1 and stretched 2× on retina screens, so encoder
+  // artefacts show. They get higher quality: measured on 8 such photos, AVIF PSNR 40.6 → 47.0 dB for +41 KB/photo.
+  small: { below: 1400, avif: { quality: 80, effort: 4 }, webp: { quality: 90 } } };
 const SETTINGS_KEY = crypto.createHash('md5').update(JSON.stringify(SETTINGS)).digest('hex').slice(0, 6);
 
 const content = JSON.parse(await fs.readFile(path.join(ROOT, 'build/content.json'), 'utf8'));
@@ -36,11 +39,12 @@ async function processOne(src) {
   const { width: W, height: H } = await base.clone().toBuffer({ resolveWithObject: true }).then(r => r.info);
   const widths = [...new Set(SETTINGS.widths.filter(w => w < W).concat(Math.min(W, SETTINGS.widths.at(-1))))].sort((a, b) => a - b);
   const variants = { avif: [], webp: [] };
+  const q = W < SETTINGS.small.below ? SETTINGS.small : SETTINGS;
   for (const w of widths) {
     const r = base.clone().resize({ width: w }).withMetadata({ orientation: undefined });
     const a = `${hash}-${w}.avif`, b = `${hash}-${w}.webp`;
-    await r.clone().avif(SETTINGS.avif).toFile(path.join(OUT, a));
-    await r.clone().webp(SETTINGS.webp).toFile(path.join(OUT, b));
+    await r.clone().avif(q.avif).toFile(path.join(OUT, a));
+    await r.clone().webp(q.webp).toFile(path.join(OUT, b));
     variants.avif.push({ w, file: a }); variants.webp.push({ w, file: b });
   }
   const og = `${hash}-og.jpg`;

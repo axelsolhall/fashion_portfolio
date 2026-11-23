@@ -1,0 +1,12 @@
+# Agnes's project. Source folder (lets pipeline/00-ingest.mjs recognise it on a re-run):
+#   Vogue China - Stylist Alvin Yu - Photographer Alex Huanfa Cheng - Assisted by Agnes Solhall - May 2026
+title: Vogue China
+publication: ""
+date: "2026-05"
+category: Editorial
+role: Styling assistant
+alt: "Vogue China editorial, May 2026"
+credits:
+  Styling: Alvin Yu
+  Styling assistant: Agnes Solhall
+  Photography: Alex Huanfa Cheng

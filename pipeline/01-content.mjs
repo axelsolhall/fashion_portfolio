@@ -1,5 +1,5 @@
 // Module 1 — CONTENT
-// In:  content/site.yml, content/projects/<slug>/{project.yml, *.jpg|png|webp|tif}
+// In:  content/site.yml, content/order.yml (optional), content/projects/<slug>/{project.yml, *.jpg|png|webp|tif}
 // Out: build/content.json   (contract: schema "content/v1", see pipeline/contracts.md)
 // Job: read + validate + normalise what Agnes edits. No image processing here.
 import fs from 'node:fs/promises';
@@ -73,7 +73,18 @@ for (const slug of (await fs.readdir(path.join(C, 'projects'))).sort()) {
     cover: coverFile, images,
   });
 }
-// Order: explicit `order` first, then newest date first (ASSUMPTIONS A-05)
+// Order: content/order.yml (Agnes's list, A-24) → per-project `order` → newest date first (A-05)
+const orderList = await fs.readFile(path.join(C, 'order.yml'), 'utf8').then(YAML.parse, () => null);
+if (orderList != null) {
+  if (!Array.isArray(orderList)) errors.push('order.yml: must be a list of project folder names');
+  else {
+    const slugs = new Set(projects.map(p => p.slug)), dup = orderList.filter((s, i) => orderList.indexOf(s) !== i);
+    orderList.filter(s => !slugs.has(s)).forEach(s => errors.push(`order.yml: "${s}" is not a project folder (or it is a draft)`));
+    dup.forEach(s => errors.push(`order.yml: "${s}" is listed twice`));
+    projects.filter(p => !orderList.includes(p.slug)).forEach(p => warnings.push(`${p.slug}: not in order.yml — shown after the listed projects`));
+    projects.forEach(p => { const i = orderList.indexOf(p.slug); if (i >= 0) p.order = i + 1; else if (p.order != null) p.order += orderList.length; });
+  }
+}
 projects.sort((a, b) => (a.order ?? 1e9) - (b.order ?? 1e9) || b.date.localeCompare(a.date) || a.slug.localeCompare(b.slug));
 
 const out = { schema: 'content/v1', generated: new Date().toISOString(), site, projects, warnings };

@@ -29,17 +29,20 @@ npm run dev            # http://localhost:4321/
 ## Adding a project (for Agnes)
 
 **Easiest:** send a WeTransfer like the first one. One folder per project, named
-`N. Title - Stylist X - Photographer Y - Assisted by Agnes Solhall - Month Year` (leave out "Assisted by" for your own jobs),
-with the images numbered in order (`1. cover.jpg`, `2. bild.jpg`, …). Videos (.mov/.mp4) are fine. Then Axel runs:
+`Title - Stylist X - Photographer Y - Assisted by Agnes Solhall - Month Year` (leave out "Assisted by" for your own jobs),
+with the images numbered in order (`1. cover.jpg`, `2. bild.jpg`, …). Videos (.mov/.mp4) and web images (.webp/.avif) are fine.
+Send only what's new, plus a list of where the new projects go in the order. Photos already on the site are detected and skipped. Then Axel runs:
 
 ```
 npm run ingest -- "/path/to/unzipped/folder"   # shrinks + strips metadata, converts video, drafts project.yml
 npm run eval:ingest                             # what came in, what's low-res
-# edit content/projects/<slug>/project.yml (title, publication, category, role), then:
+# edit content/projects/<slug>/project.yml (title, publication, category, role), add the slugs to content/order.yml, then:
 npm run build && npm run eval && git add content && git push   # deploys to agnes.solhall.se
 ```
 
 Running it again on the same folder is safe: existing files and project.yml are never overwritten.
+
+**Order:** `content/order.yml` lists the project folders top to bottom, the same order as the home page.
 
 **By hand:** make `content/projects/<slug>/` with numbered images and a project.yml:
 
@@ -49,7 +52,6 @@ publication: 72 Magazine          # optional
 date: "2026-03"                   # YYYY or YYYY-MM
 category: Editorial               # Editorial | Campaign | …
 role: Styling assistant           # or Stylist — decides "Assisting …" vs her own credit
-order: 2                          # optional; otherwise newest first
 credits:
   Styling: Rebecca Purshouse
   Styling assistant: Agnes Solhall

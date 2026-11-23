@@ -1,0 +1,12 @@
+# Agnes's project. Source folder (lets pipeline/00-ingest.mjs recognise it on a re-run):
+#   Vogue US - Stylist Alex Harrington - Photographer Annie Leibovitz - Assisted by Agnes Solhall - April 2023
+title: Vogue US
+publication: ""
+date: "2023-04"
+category: Editorial
+role: Styling assistant
+alt: "Vogue US editorial, April 2023"
+credits:
+  Styling: Alex Harrington
+  Styling assistant: Agnes Solhall
+  Photography: Annie Leibovitz

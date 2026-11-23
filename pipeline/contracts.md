@@ -10,7 +10,9 @@ Each module reads only the previous module's output, so any module can be re-run
 ### ingest/v1: `build/ingest.json` (module 0)
 ```
 { schema, generated, source, settings,
-  projects: [{ folder, slug, parsed: {title, date, stylist, photographer, assisted, notes[]}, drafted,
+  duplicates: [{ folder, file, of: "<slug>/<file>", distance }],   // skipped: same photo already on the site (A-23)
+  similar:    [{ folder, file, to: "<slug>/<file>", distance }],   // kept, flagged for a look
+  projects: [{ folder, slug, parsed: {title, story, date, stylist, photographer, assisted, notes[]}, drafted,
                items: [{ in, inBytes, out, kind, w, h, outBytes, inW?, inH?, exifOut?, lowRes?, poster?, duration? }] }] }
 ```
 Additions below to content/v1 and images/v1 are optional fields, so older readers keep working.
@@ -21,7 +23,7 @@ Additions below to content/v1 and images/v1 are optional fields, so older reader
          education[], experience[], publications[], clients[] — each item "Name" or {name, note}; empty lists hide their section>,
   projects: [{ slug, title, publication, date "YYYY[-MM]", year, category, summary,
                credits: [{role, name}], role "Stylist"|"Styling assistant", leadStylist ("" unless assisting),
-               order|null, featured, placeholder, cover: <image file>,
+               order|null (position from content/order.yml, A-24), featured, placeholder, cover: <image file>,
                images: [{ file, src: "content/projects/<slug>/<file>", alt, caption|null,
                           kind "image"|"video", poster?: src of NN.poster.jpg (videos) }] }] }
 ```
