@@ -19,13 +19,17 @@ publications:
   - name: Vogue                      # an item is a plain name, or {name, note} for a small grey note after it
     note: US, UK, France, Spain, Portugal, Netherlands, Scandinavia, Ukraine, India, Singapore, China, Australia
   - AnOther Magazine
+  - AnOther Man
   - Autre
   - Common Language
   - CRASH
+  - ELLE Sweden
   - Purple
+  - Re-Edition
   - RUSSH
   - WSJ. Magazine
 clients:
+  - Dedicated                      # added 2026-11-24 (Agnes): her in-house brand
   - Guerlain
   - Ray-Ban
   - Arte

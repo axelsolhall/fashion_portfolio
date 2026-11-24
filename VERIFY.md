@@ -65,6 +65,14 @@ Verified by Claude:
 - Small photos get higher encode quality (A-21). `npm run eval`: all checks pass, 23/23 projects complete, 0 broken links.
 
 Needs Agnes / Axel:
-- [ ] Common Language: right way round now? Should the photographer credits have moved with the photos (A-22)?
-- [ ] Dates of SS27/AW27 work shown as 2026 (A-25); titles "Lifestyle SS26/SS27", "Lookbook SS27/AW27/AW26", "ROC Campaign".
-- [ ] Higher-res files for the 10 small-image projects (A-21). This is the only real fix for "low quality".
+- [x] Common Language: right way round now (Agnes, 2026-11-24: "NU STÄMMER DET"). Credits stay as they are (A-22).
+- [x] Dates of SS27/AW27 work shown as 2026: OK. Lifestyle SS26 → 2025 (Agnes, 2026-11-24) (A-25); titles "Lifestyle SS26/SS27", "Lookbook SS27/AW27/AW26", "ROC Campaign".
+- [ ] Higher-res files for the 10 small-image projects (A-21). This is the only real fix for "low quality". Agnes is looking for better images (2026-11-24).
+
+## Agnes's answers (2026-11-24)
+- [x] Common Language 2026 has no more images: stays at one.
+- [x] Publications + AnOther Man, ELLE Sweden, Re-Edition; clients + Dedicated (first). Done.
+- [x] Shapeshifter stylist is Rebecca Purshouse (the A-18 assumption is confirmed).
+- [x] No extra credits (hair/make-up/model): stylist + photographer only.
+- [x] Name font: keep the current one (Syne, A-15).
+- [x] Moncler video sound works on her phone.
